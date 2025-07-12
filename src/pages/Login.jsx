@@ -13,27 +13,25 @@ export const Login = () => {
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
-    console.log(dataUser);
 
-    const dataEmail = dataUser.find((item) => item.email == email);
-    const dataPassword =
-      dataUser && dataUser.find((item) => item.password == password);
-    if (dataEmail && dataPassword) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          email: email,
-          displayName: dataUser.displayName,
-          displayFirst: dataUser.displayFirst,
-          password: password,
-          photoUrl: dataUser.photoUrl,
-        },
-      });
-    } else {
-      toast.error(
-        "Kechirasiz nimadur xato parol yoki email qayta tekshiring !"
-      );
-    }
+    dataUser.map((user) => {
+      if (user.email == email && user.password == password) {
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            email: email,
+            displayName: user.displayName,
+            displayFirst: user.displayFirst,
+            password: password,
+            photoUrl: user.photoUrl,
+          },
+        });
+      } else {
+        toast.error(
+          "Kechirasiz nimadur xato parol yoki email qayta tekshiring !"
+        );
+      }
+    });
   };
 
   return (

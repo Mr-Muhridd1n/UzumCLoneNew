@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   const [search, setSearch] = useState(null);
   const { allProduct, user } = useGlobalContext();
+
   return (
     <header className="mb-5">
       <div className="lg:bg-gray-300 w-full py-1 text-sm">

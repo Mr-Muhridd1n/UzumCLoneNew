@@ -1,15 +1,17 @@
-import toast from "react-hot-toast";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { BiSolidHide } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export const SignUp = () => {
   const { dataUser, dispatch } = useGlobalContext();
+  const [login, setLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
@@ -23,18 +25,30 @@ export const SignUp = () => {
     //   password: password,
     //   photoUrl: url,
     // });
-
-    dispatch({
-      type: "SIGNUP",
-      payload: {
-        email: email,
-        displayName: name,
-        displayFirst: first,
-        password: password,
-        photoUrl: url,
-      },
+    dataUser.map((user) => {
+      if (user.email != email) {
+        dispatch({
+          type: "SIGNUP",
+          payload: {
+            email: email,
+            displayName: name,
+            displayFirst: first,
+            password: password,
+            photoUrl: url,
+          },
+        });
+        setLogin(true);
+      } else {
+        toast.error(
+          "Kechirasiz siz kiritgan email allaqachon royhatdan o'tgan"
+        );
+      }
     });
   };
+
+  if (login) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <section className="bg-gradient-to-br from-purple-900 via-purple-700 to-pink-500">
@@ -49,6 +63,7 @@ export const SignUp = () => {
             <input
               type="text"
               name="name"
+              required
               className="input w-full focus:outline-purple-800 focus:border-none"
               placeholder="Ismingizni kiriting!"
             />
@@ -58,6 +73,7 @@ export const SignUp = () => {
             <input
               type="text"
               name="first"
+              required
               className="input w-full focus:outline-purple-800 focus:border-none"
               placeholder="Familiyangizni kiriting!"
             />
@@ -67,6 +83,7 @@ export const SignUp = () => {
             <input
               type="email"
               name="email"
+              required
               className="input w-full focus:outline-purple-800 focus:border-none"
               placeholder="Emailingizni kiriting!"
             />
@@ -77,6 +94,7 @@ export const SignUp = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
+                required
                 className="input w-full focus:outline-purple-800 focus:border-none"
                 placeholder="Parolingizni kiriting!"
               />
@@ -95,6 +113,7 @@ export const SignUp = () => {
             <input
               type="url"
               name="url"
+              required
               className="input w-full focus:outline-purple-800 focus:border-none"
               placeholder="Profil uchun rasm URL !"
             />

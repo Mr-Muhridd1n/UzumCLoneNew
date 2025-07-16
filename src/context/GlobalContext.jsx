@@ -63,7 +63,6 @@ const changeState = (state, action) => {
       return {
         ...state,
         dataUser: [...state.dataUser, payload],
-        user: payload,
       };
     case "CALCULATE_TOTAL":
       const { allProduct, allPrice } = state.card.reduce(
